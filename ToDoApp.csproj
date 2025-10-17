@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <WebRoot>ClientApp/dist</WebRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,6 @@
   </Target>
   
   <ItemGroup>
-    <Content Include="ClientApp\dist\**" CopyToPublishDirectory="Always" />
+    <Content Include="ClientApp\dist\**" CopyToPublishDirectory="Always" LinkBase="wwwroot\" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
 </Project>
