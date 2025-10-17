@@ -1,0 +1,6 @@
+/.vs
+/appsettings.Development.json
+/bin
+/obj
+/ToDoApp.csproj.user
+/ToDoApp.http
