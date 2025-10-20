@@ -8,11 +8,15 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://localhost:5173',
+        target: 'http://localhost:5272',
         changeOrigin: true,
         secure: false
       }
     }
+  },
+  build: {
+    outDir: fileURLToPath(new URL('../wwwroot', import.meta.url)),
+    emptyOutDir: true,
   },
   resolve: {
     alias: {
