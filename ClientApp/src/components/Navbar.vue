@@ -9,8 +9,10 @@
         <li><RouterLink to="/" class="nav-link px-2" active-class="link-secondary" exact-active-class="link-secondary">Lista Zadań</RouterLink></li>
         <li><RouterLink to="/upcoming" class="nav-link px-2" active-class="link-secondary">Nadchodzące</RouterLink></li>
         <li><RouterLink to="/history" class="nav-link px-2" active-class="link-secondary">Historia</RouterLink></li>
+        <!--
         <li><RouterLink to="/projects" class="nav-link px-2" active-class="link-secondary">Projekty</RouterLink></li>
         <li><RouterLink to="/stats" class="nav-link px-2" active-class="link-secondary">Statystyki</RouterLink></li>
+        -->
       </ul>
       <!--
       <div class="text-end">

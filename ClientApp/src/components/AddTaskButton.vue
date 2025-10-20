@@ -3,7 +3,7 @@
     <button
       class="btn btn-success d-flex align-items-center"
       :disabled="loading"
-      @click="addTask"
+      @click="showForm"
     >
       <span v-if="!loading">➕ Dodaj zadanie</span>
       <span v-else class="spinner-border spinner-border-sm me-2"></span>
@@ -20,23 +20,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const props = defineProps({
-  apiUrl: {
-    type: String,
-    default: '/api/tasks'
-  },
-  defaultTask: {
-    type: Object,
-    default: () => ({
-      name: 'Nowe zadanie',
-      description: '',
-      dueDate: null,
-      priority: 'Normalny'
-    })
-  }
-})
-
-const emit = defineEmits(['task-added'])
+const emit = defineEmits(['show-form'])
 
 const loading = ref(false)
 const message = ref('')
@@ -47,35 +31,12 @@ const messageClass = computed(() => ({
   'text-danger': messageType.value === 'error'
 }))
 
-async function addTask() {
-  loading.value = true
-  message.value = ''
-
-  try {
-    const response = await fetch(props.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(props.defaultTask)
-    })
-
-    if (!response.ok) throw new Error(`Błąd: ${response.status}`)
-
-    const created = await response.json()
-
-    message.value = 'Zadanie zostało dodane!'
-    messageType.value = 'success'
-    emit('task-added', created) // informacja zwrotna
-  } catch (err) {
-    console.error(err)
-    message.value = 'Nie udało się dodać zadania.'
-    messageType.value = 'error'
-  } finally {
-    loading.value = false
-    setTimeout(() => (message.value = ''), 3000)
-  }
+function showForm() {
+  // emit do rodzica – informacja, że ma pokazać formularz
+  console.log('Emituję show-form')
+  emit('show-form')
 }
+
 </script>
 
 <style scoped>

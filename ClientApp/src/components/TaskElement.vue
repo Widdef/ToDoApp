@@ -6,6 +6,7 @@
           <h3 class="mb-0 text-start flex-grow-1">{{ name }}</h3>
         <!-- Przyciski -->
         <button
+          v-if="!history"
           type="button"
           class="btn btn-outline-primary btn-square me-2"
           @click="$emit('done')"
@@ -16,6 +17,7 @@
         </button>
 
         <button
+          v-if="!history"
           type="button"
           class="btn btn-primary me-2"
           @click="$emit('edit')"
@@ -24,6 +26,7 @@
         </button>
 
         <button
+          v-if="!history"
           type="button"
           class="btn btn-outline-danger"
           @click="onDelete"
@@ -41,18 +44,18 @@
         </div>
         <!-- Szacowany czas -->
         <div class="col-3 col-md-3 col-lg-2">
-          <small class="text-secondary d-block">Przewidywany czas</small>
+          <small class="text-secondary d-block">Przewidywany czas (min)</small>
           <span>{{ estimatedTime }}</span>
         </div>
         <!-- Priorytet -->
         <div class="col-3 col-md-3 col-lg-1">
           <small class="text-secondary d-block">Priorytet</small>
-          <span class="badge" :class="priorityClass">{{ priority }}</span>
+          <span class="badge" :class="priorityClass">{{ priorityName }}</span>
         </div>
       </div>
 
       <!-- Opis -->
-      <div class="mt-3">
+      <div class="mt-3 text-start">
         <p v-if="!isLong || expanded" class="mb-1 preserve-newlines">
           {{ description }}
         </p>
@@ -77,11 +80,13 @@
 import { ref, computed } from 'vue'
 
 const props = defineProps({
+  id: { type: Number, required: true },
   name: { type: String, required: true },
   dueDate: { type: [String, Date], default: null },
   estimatedTime: { type: [String, Number], default: '' },
-  priority: { type: String, default: 'Normalny' },
+  priority: { type: Number, default: 1, validator: v => [null,-1, 0, 1, 2].includes(Number(v)) },
   description: { type: String, default: '' },
+  history: { type: Boolean, default: false },
 })
 const longThreshold = 120
 const emit = defineEmits(['done', 'edit', 'delete'])
@@ -89,8 +94,10 @@ const emit = defineEmits(['done', 'edit', 'delete'])
 const expanded = ref(false)
 const isLong = computed(() => (props.description?.length || 0) > longThreshold)
 
+const priorityName = ['Niski', 'Średni', 'Wysoki'][props.priority] || 'Nieznany';
+
 const priorityClass = computed(() => {
-  const p = (props.priority || '').toLowerCase()
+  const p = priorityName.toLowerCase()
   if (['wysoki', 'high'].includes(p)) return 'bg-danger'
   if (['średni', 'sredni', 'medium'].includes(p)) return 'bg-warning text-dark'
   return 'bg-secondary'
@@ -106,7 +113,7 @@ function formatDate(d) {
 
 function onDelete() {
   if (window.confirm('Na pewno usunąć to zadanie?')) {
-    emit('delete')
+    emit('delete', props.id)
   }
 }
 </script>

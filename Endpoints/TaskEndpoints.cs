@@ -23,8 +23,8 @@ public static class TasksEndpoints
             if (q.Completed.HasValue)
                 query = query.Where(t => t.IsCompleted == q.Completed.Value);
 
-            if (q.From.HasValue) query = query.Where(t => t.CreatedAt >= q.From.Value);
-            if (q.To.HasValue)   query = query.Where(t => t.CreatedAt <= q.To.Value);
+            if (q.From.HasValue) query = query.Where(t => t.DueDate >= q.From.Value);
+            if (q.To.HasValue)   query = query.Where(t => t.DueDate <= q.To.Value);
 
             var desc = q.Order?.ToLower() == "desc";
             query = q.SortBy?.ToLower() switch
@@ -58,11 +58,37 @@ public static class TasksEndpoints
         {
             var t = await db.Tasks.FindAsync(id);
             if (t is null) return Results.NotFound();
+
+            // Nadpisujemy wszystkie modyfikowalne pola encji
             t.Title = dto.Title;
             t.IsCompleted = dto.IsCompleted;
             t.DueDate = dto.DueDate;
+            t.Description = dto.Description;
+            t.Priority = dto.Priority;
+            t.Category = dto.Category;
+            t.EstimatedTimeMinutes = dto.EstimatedTimeMinutes;
+
+            // UWAGA: zwykle CreatedAt zostawiamy bez zmian
             await db.SaveChangesAsync();
             return Results.NoContent();
+        });
+
+        // --- częściowa aktualizacja (PATCH) ---
+        group.MapPatch("/{id:int}", async (int id, UpdateTaskDto dto, TaskDbContext db) =>
+        {
+            var t = await db.Tasks.FindAsync(id);
+            if (t is null) return Results.NotFound();
+
+            if (dto.Title is not null) t.Title = dto.Title;
+            if (dto.IsCompleted.HasValue) t.IsCompleted = dto.IsCompleted.Value;
+            if (dto.DueDate.HasValue) t.DueDate = dto.DueDate;
+            if (dto.Description is not null) t.Description = dto.Description;
+            if (dto.Priority.HasValue) t.Priority = dto.Priority.Value;
+            if (dto.Category is not null) t.Category = dto.Category;
+            if (dto.EstimatedTimeMinutes.HasValue) t.EstimatedTimeMinutes = dto.EstimatedTimeMinutes.Value;
+
+            await db.SaveChangesAsync();
+            return Results.Ok(t); // zwracamy zaktualizowany obiekt
         });
 
         group.MapDelete("/{id:int}", async (int id, TaskDbContext db) =>

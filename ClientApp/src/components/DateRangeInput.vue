@@ -4,7 +4,7 @@
     <div>
       <label class="form-label mb-1 d-block">Od</label>
       <input
-        type="text"
+        type="date"
         class="form-control"
         :value="from"
         @input="onInput('from', $event)"
@@ -18,7 +18,7 @@
     <div>
       <label class="form-label mb-1 d-block">Do</label>
       <input
-        type="text"
+        type="date"
         class="form-control"
         :value="to"
         @input="onInput('to', $event)"
@@ -51,5 +51,25 @@ function onInput(field, e) {
 <style scoped>
 .form-control {
   width: 160px;
+}
+
+input[type="date"].form-control {
+  background-color: #2b2b2b;      
+  color: #fff;                    
+  border: 1px solid #444;         
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+
+  /* żeby placeholder (dd.mm.rrrr) był też jasny */
+  &::placeholder {
+    color: #bbb;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #777;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+  }
 }
 </style>
