@@ -32,17 +32,17 @@ Wymagania:
 - .NET 8 SDK
 - SQLite
 
-Jak skompilować:
-dotnet restore
-dotnet ef database update
-dotnet run
+Jak skompilować:<br/>
+dotnet restore<br/>
+dotnet ef database update<br/>
+dotnet run<br/>
 
-Front-end, jest budowany automatycznie podczas buildu dotneta.
-W przypadku chęci uruchomienia front-endu bez API, trzeba 
-przejść do katalogu ClientApp i wywołać:
-- npm install
-- npm run dev
+Front-end, jest budowany automatycznie podczas buildu dotneta.<br/>
+W przypadku chęci uruchomienia front-endu bez API, <br/>
+trzeba przejść do katalogu ClientApp i wywołać:
+- npm install<br/>
+- npm run dev<br/>
 Samodzielny frontend startuje pod adresem: http://localhost:5173
 
-wersja release:
+wersja release:<br/>
     dotnet publish -c Release -r win-x64 --self-contained true
