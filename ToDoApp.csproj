@@ -4,7 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <WebRoot>ClientApp/dist</WebRoot>
+    <SatelliteResourceLanguages>en;pl</SatelliteResourceLanguages>
+    <WebRoot>wwwroot</WebRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,17 +17,16 @@
     </PackageReference>
   </ItemGroup>
   
-  <Target Name="RunFrontend" AfterTargets="Publish">
-    <Exec WorkingDirectory="ClientApp" Command="npm install" />
-    <Exec WorkingDirectory="ClientApp" Command="npm run build" />
-  </Target>
-
-  <Target Name="RunFrontend" AfterTargets="Build">
-    <Exec WorkingDirectory="ClientApp" Command="npm install" />
+  <Target Name="BuildFrontend" BeforeTargets="PrepareForPublish">
+    <Exec WorkingDirectory="ClientApp" Command="npm ci" />
     <Exec WorkingDirectory="ClientApp" Command="npm run build" />
   </Target>
   
   <ItemGroup>
-    <Content Include="ClientApp\dist\**" CopyToPublishDirectory="Always" LinkBase="wwwroot\" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="ClientApp\dist\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
 </Project>
