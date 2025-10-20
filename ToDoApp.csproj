@@ -9,14 +9,24 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   
+  <Target Name="RunFrontend" AfterTargets="Publish">
+    <Exec WorkingDirectory="ClientApp" Command="npm install" />
+    <Exec WorkingDirectory="ClientApp" Command="npm run build" />
+  </Target>
+
   <Target Name="RunFrontend" AfterTargets="Build">
     <Exec WorkingDirectory="ClientApp" Command="npm install" />
     <Exec WorkingDirectory="ClientApp" Command="npm run build" />
   </Target>
   
   <ItemGroup>
-    <Content Include="ClientApp\dist\**" CopyToPublishDirectory="Always" LinkBase="wwwroot\" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="ClientApp\dist\**" CopyToPublishDirectory="Always" LinkBase="wwwroot\" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

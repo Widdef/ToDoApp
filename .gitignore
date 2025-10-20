@@ -4,3 +4,9 @@
 /obj
 /ToDoApp.csproj.user
 /ToDoApp.http
+/wwwroot
+
+# SQLite local database
+*.db
+*.db-shm
+*.db-wal

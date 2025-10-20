@@ -1,9 +1,42 @@
 <script setup>
+import { onMounted, reactive } from 'vue';
+import api from '@/api/axios';
 import TaskElement from '../components/TaskElement.vue';
 import AddTaskButton from '../components/AddTaskButton.vue';
 import DateRangeInput from '../components/DateRangeInput.vue';
 
+const state = reactive({
+  tasks: [],
+  dateFrom: null,
+  dateTo: null,
+});
+
+onMounted(() => {
+  fetchTasks();
+});
+
+function onDateRangeChange({ from, to }) {
+  state.dateFrom = from;
+  state.dateTo = to;
+  console.log('Zakres dat zmieniony:', from, to);
+}
+
+function fetchTasks() {
+  api.get('/tasks', {
+    params: {
+      from: state.dateFrom || undefined,
+      to: state.dateTo || undefined,
+    },
+  }).then(response => {
+    state.tasks = response.data;
+    console.log('Pobrane zadania:', state.tasks);
+  }).catch(error => {
+    console.error('Błąd podczas pobierania zadań:', error);
+  }); 
+}
+
 function onTaskAdded(task) {
+  state.tasks.push(task);
   console.log('Nowe zadanie:', task)
 }
 </script>
