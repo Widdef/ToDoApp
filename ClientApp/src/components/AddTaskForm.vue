@@ -109,8 +109,8 @@ async function submit() {
         <p v-if="error" class="error">{{ error }}</p>
 
         <footer class="modal-footer">
-          <button type="button" @click="emit('close')">Anuluj</button>
-          <button type="submit" :disabled="saving">{{ saving ? 'Zapisywanie…' : 'Zapisz' }}</button>
+          <button class="btn btn-warning" type="button" @click="emit('close')">Anuluj</button>
+          <button class="btn btn-primary" type="submit" :disabled="saving">{{ saving ? 'Zapisywanie…' : 'Zapisz' }}</button>
         </footer>
       </form>
     </div>
@@ -135,7 +135,7 @@ async function submit() {
 .modal-body{ padding: 1rem 1.1rem; display:grid; gap:.85rem; }
 .modal-footer{ display:flex; justify-content:flex-end; gap:.5rem; margin-top:.5rem; }
 .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:.75rem; }
-.icon{ background: transparent; border:none; font-size:1.4rem; line-height:1; cursor:pointer; }
+.icon{ background: transparent; border:none; font-size:1.4rem; line-height:1; cursor:pointer; color: black; }
 .error{ color:#c0392b; }
 input, select, textarea{ width:100%; padding:.55rem .65rem; border:1px solid #ddd; border-radius:8px; }
 button{ padding:.55rem .9rem; border-radius:10px; border:1px solid #ddd; background:#f8f8f8; cursor:pointer; }

@@ -6,11 +6,11 @@ using ToDoApp.Endpoints;
 
 var options = new WebApplicationOptions
 {
-    Args = args,
-    WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "dist")
+    Args = args
 };
 
 var builder = WebApplication.CreateBuilder(options);
+builder.WebHost.UseUrls("http://localhost:5272");
 
 builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -35,10 +35,6 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-}
-else
-{
-    app.UseHttpsRedirection();
 }
 
 app.UseDefaultFiles(); // Enables default file mapping (e.g., index.html)
